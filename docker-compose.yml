@@ -15,16 +15,17 @@ services:
       - /dev/dri:/dev/dri
       - /dev/snd:/dev/snd
     volumes:
-      - state:/root/state
-      - shared:/root/shared/
+      - state:/root/state/
+      - workspace:/root/ws/
       - atom_config:/root/.atom/
       - pycharm_config:/root/.PyCharmCE2019.2/
       - ./config/setup_script.sh:/root/.setup_script.sh:ro
-    working_dir: /root/shared/
+      - ./shared/:/root/shared/
+    working_dir: /root/ws/
     command: bash -c "terminator -e \"echo 'Entering Docker Container...' && bash\""
 
 volumes:
   state:
-  shared:
+  workspace:
   pycharm_config:
   atom_config:
