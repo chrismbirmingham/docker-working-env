@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Go to the directory of this file -- needed for docker-compose
+FILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $FILE_DIR
+
 # share display on ubuntu platforms
 xhost +local:
 
