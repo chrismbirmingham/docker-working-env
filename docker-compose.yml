@@ -1,10 +1,11 @@
-version: '3'
+version: '3.4'
 
 services:
   ros_service:
     build:
       context: ./dockerfiles/
       dockerfile: main_dev
+      network: host
     environment:
       DISPLAY: $DISPLAY
       QT_GRAPHICSSYSTEM: native
