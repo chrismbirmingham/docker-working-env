@@ -1,3 +1,4 @@
+======
 README
 ======
 
@@ -19,8 +20,26 @@ You modify the Dockerfile so that you can run your code and then just ship the D
 Oh, and you can develop on a different operating system.
 Say, you need to develop on Ubuntu 14.04 for your ROS project, but 18.04 is much nicer to use day to day.
 
+
+********
+Features
+********
+
+Visual
+    Open up your favorite IDE, photos, videos, file explorer, Rviz, etc. from within a Docker container
+
+Volumes
+    Save your work between sessions in volumes; also share files back and forth with your container in the shared folder
+
+Less risk in testing software
+    Explore solutions to your problems with abandon; if you break the Docker container, just spawn another Docker container - no more reinstalling your operating system
+
+ROS code completion
+    Open PyCharm and you'll be able to use code completion with `rospy` 
+
+**************
 How this works
---------------
+**************
 
 There is a Dockerfile that sets up ROS (currently setup for Kinetic on 16.04) and installs several things that I want to use, including the PyCharm IDE.
 The Dockerfile is called by Docker compose file (`docker-compose.yaml`) that builds the Dockerfile and sets it up.
@@ -30,4 +49,4 @@ This is all kicked off with a run script (`run.sh`) that runs the docker compose
 
 For convience, this opens a new terminal (terminator, actually) so that you can work in your new environment opening new tabs, etc.
 Oh, and you can open IDE's, too.
-Both PyCharm and Atom are installed in the Dockerfile.
+Both PyCharm, Atom, and Visual Studio Code are installed in the Dockerfile.
