@@ -25,6 +25,7 @@ RUN \
 		git-gui \
 		fonts-powerline \
 		meld \
+		nautilus \
 	&& rm -rf /var/lib/apt/lists/* 
 
 # Setup Pycharm
@@ -124,6 +125,12 @@ RUN \
 		func_timeout \
 		datetimerange \
 	&& python3.6 -m pip install --ignore-installed pyyaml \
+	&& rm -rf /var/lib/apt/lists/* 
+
+# Setup Python3.8 
+RUN \
+	apt-get update -y && apt-get upgrade -y \
+	&& apt-get install -y python3.8-dev \
 	&& rm -rf /var/lib/apt/lists/* 
 
 # For convenience add a source script to bashrc and update without clearing
