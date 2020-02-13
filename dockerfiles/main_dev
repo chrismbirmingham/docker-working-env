@@ -68,6 +68,7 @@ RUN \
 		ros-$ROS_DISTRO-gazebo-ros-control \
 		ros-$ROS_DISTRO-rosbridge-server \
 		ros-$ROS_DISTRO-audio-common \
+		python-catkin-tools \
 	&& rm -rf /var/lib/apt/lists/* 
 
 # Setup Python2 for cordial
@@ -124,6 +125,9 @@ RUN \
 		freezegun \
 		func_timeout \
 		datetimerange \
+		jupyterlab \
+		statsmodels \
+		matplotlib \
 	&& python3.6 -m pip install --ignore-installed pyyaml \
 	&& rm -rf /var/lib/apt/lists/* 
 
