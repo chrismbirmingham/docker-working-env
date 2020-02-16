@@ -61,40 +61,39 @@ Install Docker and Docker-compose.
 Ubuntu
 ======
 
-Setup Docker:
+Setup Docker
+------------
 
-    a. Install Docker::
+1. Install Docker::
 
-        curl -fsSL https://get.docker.com -o get-docker.sh
-        sh get-docker.sh
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sh get-docker.sh
 
-    b. Set Docker to run without :code:`sudo`::
+2. Set Docker to run without :code:`sudo`::
 
-        sudo groupadd docker
-        sudo gpasswd -a $USER docker
-        newgrp docker
+    sudo groupadd docker
+    sudo gpasswd -a $USER docker
+    newgrp docker
 
-    c. Test that Docker is installed correctly and works without :code:`sudo`::
+3. Test that Docker is installed correctly and works without :code:`sudo`::
 
-        docker run hello-world
+    docker run hello-world
 
-    .. figure:: images/hello_from_docker.png
-        :align: center
+Setup Docker-compose
+--------------------
 
-        What is printed from running the :code:`hello-world` docker container.
+1. Install Docker-compose::
 
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
 
-Setup Docker-compose:
+2. Check that docker compose is installed correctly::
 
-    a. Install Docker-compose::
+    docker-compose version
 
-        sudo curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        sudo chmod +x /usr/local/bin/docker-compose
+Run it
+------
 
-    b. Check that docker compose is installed correctly::
-
-        docker-compose version
-
-Run the run script to start the container::
+::
 
     ./run.sh
