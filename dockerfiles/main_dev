@@ -68,7 +68,6 @@ RUN \
 		ros-$ROS_DISTRO-gazebo-ros-control \
 		ros-$ROS_DISTRO-rosbridge-server \
 		ros-$ROS_DISTRO-audio-common \
-		python-catkin-tools \
 	&& rm -rf /var/lib/apt/lists/* 
 
 # Setup Python2 for cordial
@@ -87,7 +86,7 @@ RUN \
 		python-pyaudio \
         python-gst0.10 python-scipy \
 	&& python2 -m pip install --upgrade pip \
-	&& python2 -m pip install rospkg catkin_pkg \
+	&& python2 -m pip install rospkg catkin_pkg catkin-tools \
 	&& python2 -m pip install boto3 soundfile \
 	&& rm -rf /var/lib/apt/lists/* 
 
@@ -128,6 +127,7 @@ RUN \
 		jupyterlab \
 		statsmodels \
 		matplotlib \
+		pmdarima \
 	&& python3.6 -m pip install --ignore-installed pyyaml \
 	&& rm -rf /var/lib/apt/lists/* 
 
