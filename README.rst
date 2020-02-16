@@ -50,3 +50,51 @@ This is all kicked off with a run script (`run.sh`) that runs the docker compose
 For convience, this opens a new terminal (terminator, actually) so that you can work in your new environment opening new tabs, etc.
 Oh, and you can open IDE's, too.
 Both PyCharm, Atom, and Visual Studio Code are installed in the Dockerfile.
+
+
+*****
+Setup
+*****
+
+Install Docker and Docker-compose.
+
+Ubuntu
+======
+
+Setup Docker:
+
+    a. Install Docker::
+
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        sh get-docker.sh
+
+    b. Set Docker to run without :code:`sudo`::
+
+        sudo groupadd docker
+        sudo gpasswd -a $USER docker
+        newgrp docker
+
+    c. Test that Docker is installed correctly and works without :code:`sudo`::
+
+        docker run hello-world
+
+    .. figure:: images/hello_from_docker.png
+        :align: center
+
+        What is printed from running the :code:`hello-world` docker container.
+
+
+Setup Docker-compose:
+
+    a. Install Docker-compose::
+
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+
+    b. Check that docker compose is installed correctly::
+
+        docker-compose version
+
+Run the run script to start the container::
+
+    ./run.sh
