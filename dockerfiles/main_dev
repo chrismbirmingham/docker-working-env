@@ -26,6 +26,8 @@ RUN \
 		fonts-powerline \
 		meld \
 		nautilus \
+		vlc \
+	&& sed -i 's/geteuid/getppid/' /usr/bin/vlc \
 	&& rm -rf /var/lib/apt/lists/* 
 
 # Setup Pycharm
