@@ -121,6 +121,8 @@ RUN \
 		statsmodels \
 		matplotlib \
 		pmdarima \
+		keras \
+		tensorflow \
 	&& python3.6 -m pip install --ignore-installed pyyaml \
 	&& rm -rf /var/lib/apt/lists/* 
 
