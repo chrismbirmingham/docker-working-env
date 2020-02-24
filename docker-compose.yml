@@ -20,7 +20,6 @@ services:
     volumes:
       - state:/root/state/
       - workspace:/root/ws/
-      - atom_config:/root/.atom/
       - pycharm_config:/root/.PyCharmCE2019.2/
       - aws_config:/root/.aws/
       - visual_code_config:/root/.visual_code/
@@ -38,6 +37,5 @@ volumes:
   state:
   workspace:
   pycharm_config:
-  atom_config:
   visual_code_config:
   aws_config:
