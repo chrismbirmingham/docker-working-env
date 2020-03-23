@@ -18,6 +18,7 @@ services:
       - /dev/dri:/dev/dri
       - /dev/snd:/dev/snd
     volumes:
+      - config:/root/config/
       - state:/root/state/
       - workspace:/root/ws/
       - pycharm_config:/root/.PyCharmCE2019.2/
@@ -31,7 +32,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     working_dir: /root/ws/
-    command: bash -c "terminator -e \"echo 'Entering Docker Container...' && bash\""
+    command: bash -c "terminator -ue \"echo 'Entering Docker Container...' && bash\""
 
 volumes:
   state:

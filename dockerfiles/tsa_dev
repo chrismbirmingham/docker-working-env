@@ -1,0 +1,99 @@
+From ubuntu:18.04
+
+
+# Config
+ARG PYTHON_VERSION=3.7
+
+
+# Setup args
+ARG DEBIAN_FRONTEND=noninteractive
+
+
+# Install essentials
+RUN \
+	apt-get update \
+	&& apt-get upgrade -y \
+	&& apt-get install -y \
+		software-properties-common \
+		apt-utils \
+	&& apt-get update \
+	&& apt-get install -y \
+		curl \
+		wget \
+		tmux \
+		zsh \
+		curl \
+		wget \
+		vim \
+		sudo \
+		libgl1-mesa-glx \
+		libgl1-mesa-dri \
+		mesa-utils \
+		unzip \
+		terminator \
+		git-gui \
+		fonts-powerline \
+		meld \
+		nautilus \
+		vlc \
+	&& sed -i 's/geteuid/getppid/' /usr/bin/vlc \
+	&& rm -rf /var/lib/apt/lists/* 
+
+
+# Setup Pycharm
+RUN \
+	wget https://download.jetbrains.com/python/pycharm-community-2019.3.3.tar.gz?_ga=2.82119061.2026111249.1584414986-2024574041.1579620135 \
+	&& mv pycharm-community-* pycharm-community.tar.gz \
+	&& tar xfz pycharm-*.tar.gz -C /opt/ \
+	&& rm pycharm-community.tar.gz \
+	&& echo 'alias pycharm="/opt/pycharm-community-2019.3.3/bin/pycharm.sh"' >> /root/.bashrc 
+
+
+# Install Visual Studio Code
+RUN \
+	apt-get update \
+	&& apt-get install -y \
+		apt-transport-https \
+		ca-certificates \
+	&& curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg \
+	&& mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg \
+	&& sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list' \
+	&& apt-get update \
+	&& apt-get install -y code \
+	&& rm -rf /var/lib/apt/lists/* 
+
+
+# Setup MongoDB
+RUN \
+	wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add - \
+	&& echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list \
+	&& apt-get update \
+	&& apt-get upgrade -y \
+	&& apt-get install -y \
+		mongodb-org \
+	&& rm -rf /var/lib/apt/lists/* 
+
+
+# Setup Python3
+RUN \
+	add-apt-repository ppa:deadsnakes/ppa \
+	&& apt-get update \
+	&& apt-get upgrade -y \
+	&& apt-get install -y \
+		python${PYTHON_VERSION}-dev \
+		python3-distutils \
+		python3-pip \
+	&& python${PYTHON_VERSION} -m pip install --upgrade pip \
+	&& python${PYTHON_VERSION} -m pip install \
+		virtualenv \
+	&& rm -rf /var/lib/apt/lists/* 
+
+# Setup vim for Jupyter notebook
+RUN \
+	python${PYTHON_VERSION} -m pip install \
+		jupyterlab \
+	&& mkdir -p $(jupyter --data-dir)/nbextensions \
+	&& cd $(jupyter --data-dir)/nbextensions \
+	&& git clone https://github.com/lambdalisue/jupyter-vim-binding vim_binding \
+	&& jupyter nbextension enable vim_binding/vim_binding \
+	&& echo 'alias jupyter="jupyter-notebook --allow-root --no-browser"' >> /root/.bashrc 
