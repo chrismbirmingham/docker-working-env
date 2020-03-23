@@ -27,7 +27,7 @@ services:
       - ./config/setup_script.sh:/root/.setup_script.sh:ro
       - ./shared/:/root/shared/
       - ~/.gitconfig/:/root/.gitconfig/:ro
-      - ~/.vimrc/:/root/.vimrc/:ro
+      - ~/.vimrc:/root/.vimrc:ro
       - ~/.vim/:/root/.vim/:ro
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
@@ -36,6 +36,7 @@ services:
 
 volumes:
   state:
+  config:
   workspace:
   pycharm_config:
   visual_code_config:
