@@ -92,8 +92,17 @@ RUN \
 RUN \
 	python${PYTHON_VERSION} -m pip install \
 		jupyterlab \
+		ipykernel \
 	&& mkdir -p $(jupyter --data-dir)/nbextensions \
 	&& cd $(jupyter --data-dir)/nbextensions \
 	&& git clone https://github.com/lambdalisue/jupyter-vim-binding vim_binding \
 	&& jupyter nbextension enable vim_binding/vim_binding \
-	&& echo 'alias jupyter="jupyter-notebook --allow-root --no-browser"' >> /root/.bashrc 
+	&& echo 'alias jupyter="jupyter-notebook --allow-root --no-browser"' >> /root/.bashrc \
+       && echo 'source /root/.setup_script.sh' >> /root/.bashrc \
+
+# Setup Python3.8 
+RUN \
+	add-apt-repository -y ppa:deadsnakes/ppa \
+	&& apt-get update -y && apt-get upgrade -y \
+	&& apt-get install -y python3.8-dev \
+	&& rm -rf /var/lib/apt/lists/* 

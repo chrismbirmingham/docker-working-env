@@ -4,7 +4,7 @@ services:
   ros_service:
     build:
       context: ./dockerfiles/
-      dockerfile: main_dev
+      dockerfile: $DOCKERFILE
       network: host
     environment:
       DISPLAY: $DISPLAY
@@ -21,7 +21,7 @@ services:
       - config:/root/config/
       - state:/root/state/
       - workspace:/root/ws/
-      - pycharm_config:/root/.PyCharmCE2019.2/
+      - pycharm_config:/root/.PyCharmCE2019.3/
       - aws_config:/root/.aws/
       - visual_code_config:/root/.visual_code/
       - ./config/setup_script.sh:/root/.setup_script.sh:ro
