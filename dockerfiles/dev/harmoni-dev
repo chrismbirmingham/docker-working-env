@@ -1,0 +1,89 @@
+FROM cmbirmingham/ros-kinetic-dev:latest
+
+# install ros packages for harmoni
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-$ROS_DISTRO-audio-common \
+    && rm -rf /var/lib/apt/lists/*
+
+
+RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive $APT_INSTALL \
+        # pyaudio
+        portaudio19-dev libportaudio2 libportaudiocpp0 \
+        ffmpeg libav-tools \
+        # for receipts data processing
+        sox \
+        nodejs \
+        npm && \
+    npm install http-server -g && \
+    ln -s /usr/bin/nodejs /usr/bin/node && \
+# ==================================================================
+# python (for receipts data processing)
+# ------------------------------------------------------------------
+    PIP_INSTALL="python3.6 -m pip --no-cache-dir install --upgrade" && \
+    $PIP_INSTALL \
+        setuptools \
+        sox \
+        numpy \
+        pyaml \
+        rospkg \
+		catkin_pkg \
+		catkin_tools \
+        pyaudio \
+        packaging==19.1 \
+        soundfile \
+        boto3 && \
+    rm -rf /var/lib/apt/lists/* /tmp/*
+
+
+# ==================================================================
+# install harmoni
+# ------------------------------------------------------------------
+# install ros packages for harmoni
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-$ROS_DISTRO-audio-common \
+    ros-$ROS_DISTRO-rosbridge-server \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+
+ENV ROS_WS /root/harmoni_catkin_ws
+RUN mkdir -p $ROS_WS/src
+WORKDIR $ROS_WS
+
+RUN git -C src clone \
+      -b develop \
+      https://github.com/interaction-lab/HARMONI.git 
+
+RUN git -C src clone \
+      -b feature/4-face \
+      https://github.com/interaction-lab/HARMONI-PC.git 
+
+# install ros package dependencies
+    #RUN apt-get update && \
+    #    rosdep update && \
+    #    rosdep install -y \
+    #      --from-paths \
+    #        src/ros_tutorials/roscpp_tutorials \
+    #      --ignore-src && \
+    #    rm -rf /var/lib/apt/lists/*
+
+# build ros package source
+RUN catkin config \
+       --extend /opt/ros/$ROS_DISTRO \
+       -DPYTHON_EXECUTABLE=/usr/bin/python3.6 \
+       -DPYTHON_INCLUDE_DIR=/usr/include/python3.6m \
+       -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so \
+       && \
+    catkin build
+
+COPY ./config/ros_entrypoint.sh /ros_entrypoint.sh
+
+# source ros package from entrypoint
+RUN sed --in-place --expression \
+      '$isource "$ROS_WS/devel/setup.bash"' \
+      /ros_entrypoint.sh
+
+# run ros package launch file
+#CMD ["roslaunch", "roscpp_tutorials", "talker_listener.launch"]
