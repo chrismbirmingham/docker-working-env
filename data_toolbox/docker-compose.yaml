@@ -1,0 +1,94 @@
+version: '3.7'
+
+services:
+    notebook:
+        container_name: notebook
+        build:
+            context: jupyter-notebook-docker
+            #network: host
+        image: data_toolbox_notebook:latest
+        init: true
+        environment:
+            DISPLAY: $DISPLAY
+            QT_GRAPHICSSYSTEM: native           
+            IS_DOCKER_ENV: "true"
+        # privileged: true
+        hostname: notebook
+        # user: "1000"
+        networks:
+            my_net:
+        ports:
+            - "8888:8888"
+            - "11311:11311"
+            - "33690:33690"
+        devices: 
+          - /dev/dri:/dev/dri
+          - /dev/snd:/dev/snd
+          - /dev/video0:/dev/video0
+        volumes:
+            - /home/chris/coding/usc/multi-party/:/home/ws/
+            - /media/chris/M2/:/home/data/
+            #- file-store:/home/chris
+            # IDEs
+            - pycharm_config:/root/.PyCharmCE2019.3/
+            - visual_code_config:/root/.visual_code/
+            - ~/.vscode/:/root/.vscode/
+            # Configuration
+            - ./jupyter-notebook-docker/dev_setup_script.sh:/root/.dev_setup_script.sh
+            # Other
+            - /tmp/.X11-unix:/tmp/.X11-unix
+            - ~/.config/terminator/config:/root/.config/terminator/config
+            - ~/.gitconfig:/root/.gitconfig:ro
+            - ~/.ssh/:/root/.ssh:ro
+            - ~/.vimrc:/root/.vimrc:ro
+            - ~/.vim/:/root/.vim/:ro
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
+        working_dir: /home/
+        command: bash -c "
+            terminator -ue \"echo 'Entering notebook Container...' && bash\""
+
+    mlflow:
+        build:
+            context: ./ml-flow-docker
+        environment:
+            DISPLAY: $DISPLAY
+            QT_GRAPHICSSYSTEM: native
+            IS_DOCKER_ENV: "true"
+        networks:
+            my_net:
+        expose: 
+            - "5000"
+        ports:
+            - "5000:5000"
+        depends_on: 
+            - postgres
+
+    postgres:
+        build:
+            context: ./postgres-docker
+        environment:
+            DISPLAY: $DISPLAY
+            QT_GRAPHICSSYSTEM: native
+            IS_DOCKER_ENV: "true"
+        restart: always
+        environment:
+            POSTGRES_USER: 'admin'
+            POSTGRES_PASSWORD: 'secret'
+        networks:
+            my_net:
+        ports: 
+            - "5432:5432"
+        volumes:
+            - postgres-store:/var/lib/postgresql/data
+
+networks:
+    my_net:
+        driver: bridge
+
+volumes:
+    postgres-store:
+    file-store:
+    visual_code_config:
+    aws_config:
+    pycharm_config:

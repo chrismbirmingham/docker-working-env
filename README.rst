@@ -97,3 +97,7 @@ Run it
 ::
 
     ./run.sh
+
+Build it
+--------
+docker build --rm -f path/to/dockerfile --tag dockerhub_username/containername:latest --squash .
