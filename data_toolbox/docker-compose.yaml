@@ -1,4 +1,4 @@
-version: '3.7'
+version: '2.4'
 
 services:
     notebook:
@@ -8,10 +8,13 @@ services:
             #network: host
         image: data_toolbox_notebook:latest
         init: true
+        runtime: nvidia
         environment:
             DISPLAY: $DISPLAY
             QT_GRAPHICSSYSTEM: native           
             IS_DOCKER_ENV: "true"
+            NVIDIA_VISIBLE_DEVICES: all
+            CUDA_VISIBLE_DEVICES: 0
         # privileged: true
         hostname: notebook
         # user: "1000"
@@ -24,7 +27,7 @@ services:
         devices: 
           - /dev/dri:/dev/dri
           - /dev/snd:/dev/snd
-          - /dev/video0:/dev/video0
+        #   - /dev/video0:/dev/video0
         volumes:
             - /home/chris/coding/usc/multi-party/:/home/ws/
             - /media/chris/M2/:/home/data/

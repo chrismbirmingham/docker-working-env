@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM nvidia/cuda:10.1-base-ubuntu18.04
 
 # ==================================================================
 # Abstractions for apt installation
@@ -47,6 +47,7 @@ RUN \
     libgl1-mesa-glx \
     libgl1-mesa-dri \
     mesa-utils \
+    npm \
     && sed -i 's/geteuid/getppid/' /usr/bin/vlc \
     && rm -rf /var/lib/apt/lists/* 
 
@@ -69,22 +70,31 @@ RUN \
     && python3.6 -m pip install \
     setuptools \
     && python3.6 -m pip install \
-    jupyterlab \
+    jupyterlab "ipywidgets==7.5" \
+    numpy \
+    cython \
     # DATA SCIENCE TOOLS
+    && python3.6 -m pip install \
     pandas \
     sklearn \
     statsmodels \
     hmmlearn \
     pmdarima \
     torch torchvision \
+    sktime \
+    gpyopt \
+    optuna \
     # VISUALIZATION
+    && python3.6 -m pip install \
     matplotlib \
     seaborn \
     bokeh \
     plotly==4.8.0 \
     dill \
     mlflow \
+    cufflinks \
     # MISC
+    && python3.6 -m pip install \
     requests \
     schedule \
     freezegun \
@@ -92,6 +102,7 @@ RUN \
     datetimerange \
     psycopg2-binary \
     adjustText \
+    playsound \
     && python3.6 -m pip install --ignore-installed pyyaml \
     && rm -rf /var/lib/apt/lists/* 
 
@@ -118,6 +129,11 @@ RUN \
     && apt-get update -y \
     && apt-get install -y code \
     && rm -rf /var/lib/apt/lists/* 
+
+RUN \
+    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash - && \
+    apt-get install -y nodejs && \
+    jupyter labextension install jupyterlab-plotly@4.8.1
 
 RUN \
     echo 'source /root/.dev_setup_script.sh' >> /root/.bashrc \
