@@ -51,46 +51,46 @@ services:
         command: bash -c "
             terminator -ue \"echo 'Entering notebook Container...' && bash\""
 
-    mlflow:
-        build:
-            context: ./ml-flow-docker
-        environment:
-            DISPLAY: $DISPLAY
-            QT_GRAPHICSSYSTEM: native
-            IS_DOCKER_ENV: "true"
-        networks:
-            my_net:
-        expose: 
-            - "5000"
-        ports:
-            - "5000:5000"
-        depends_on: 
-            - postgres
+    # mlflow:
+    #     build:
+    #         context: ./ml-flow-docker
+    #     environment:
+    #         DISPLAY: $DISPLAY
+    #         QT_GRAPHICSSYSTEM: native
+    #         IS_DOCKER_ENV: "true"
+    #     networks:
+    #         my_net:
+    #     expose: 
+    #         - "5000"
+    #     ports:
+    #         - "5000:5000"
+    #     depends_on: 
+    #         - postgres
 
-    postgres:
-        build:
-            context: ./postgres-docker
-        environment:
-            DISPLAY: $DISPLAY
-            QT_GRAPHICSSYSTEM: native
-            IS_DOCKER_ENV: "true"
-        restart: always
-        environment:
-            POSTGRES_USER: 'admin'
-            POSTGRES_PASSWORD: 'secret'
-        networks:
-            my_net:
-        ports: 
-            - "5432:5432"
-        volumes:
-            - postgres-store:/var/lib/postgresql/data
+    # postgres:
+    #     build:
+    #         context: ./postgres-docker
+    #     environment:
+    #         DISPLAY: $DISPLAY
+    #         QT_GRAPHICSSYSTEM: native
+    #         IS_DOCKER_ENV: "true"
+    #     restart: always
+    #     environment:
+    #         POSTGRES_USER: 'admin'
+    #         POSTGRES_PASSWORD: 'secret'
+    #     networks:
+    #         my_net:
+    #     ports: 
+    #         - "5432:5432"
+    #     volumes:
+    #         - postgres-store:/var/lib/postgresql/data
 
 networks:
     my_net:
         driver: bridge
 
 volumes:
-    postgres-store:
+    # postgres-store:
     file-store:
     visual_code_config:
     aws_config:
